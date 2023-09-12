@@ -5,7 +5,6 @@ import datetime
 import re
 
 
-
 def check(email):
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
@@ -18,7 +17,7 @@ def check(email):
 
     
 load_dotenv(".env")
-DETA_KEY =os.getenv("DETA_KEY")
+DETA_KEY = os.environ["DETA_KEY"]
 deta= Deta(DETA_KEY)
 
 
@@ -26,9 +25,9 @@ db=deta.Base("auth")
 
 stock=deta.Base("Stocks")
 
-def insert_user(username,full_name,email,password):
+def insert_user(username,full_name,email,password,db_list):
     date_join=str(datetime.datetime.now()) 
-    db.put({"key":username,"email":email,"Fullname":full_name,"Password":password,"Date of join":date_join})
+    db.put({"key":username,"email":email,"Fullname":full_name,"Password":password,"Date of join":date_join,"db_list":db_list})
 
 def fetch_user():
     users=db._fetch()
@@ -49,12 +48,64 @@ def fetch_stocks():
         dd[dt["key"]]=dt["symbol"]
     return dd
 
+
 # get hte information
 def get_user(Username):
     """If not found , the function will return None """
     return db.get(Username)
 
 
+#Update user detail
+def Update_db_list(username,db_list):
+    db.update(key=username,updates={"db_list":db_list})
+
+
+
+# --------------------------JWT SECTION---------------------------
+
+# import jwt
+
+# payload_data = {
+#     "sub": "4242",
+#     "name": "Rahul Chauhan",
+#     "nickname": "Rjc"
+# }
+
+# my_secret = 'my_super_secret'
+
+# # token = jwt.encode(
+# #     payload=payload_data,
+# #     key=my_secret
+# # )
+
+# # print(token)
+
+# # first import the module
+# from cryptography.hazmat.primitives import serialization
+# # read and load the key
+# private_key = open('rahul/.ssh/Rjchauhan', 'r').read()
+# key = serialization.load_ssh_private_key(private_key.encode(), password=b'Rjchauhan')
+
+# new_token = jwt.encode(
+#     payload=payload_data,
+#     key=key,
+#     algorithm='RS256'
+# )
+
+# print(new_token)
+
+# # print(jwt.decode(token, key='my_super_secret', algorithms=['HS256', ]))
+
+# header_data = jwt.get_unverified_header(new_token)
+
+# public_key=open('rahul/.ssh/Rjchauhan','r').read()
+# key2=serialization.load_ssh_public_key(public_key.encode())
+
+# print(jwt.decode(
+#     jwt=new_token,
+#     key=key2,
+#     algorithms=['RS256', ]
+# ))
 """
 #update the information
 
