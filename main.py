@@ -9,7 +9,12 @@ st.set_page_config(page_title="Stock Portfolio" , page_icon=":bar_chart:",layout
 
 
 #----------------------------------------------------------------DATABASE COMPLETE----------------------------------------------------------------
-
+def plot_raw_data(tickerDf):
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=tickerDf['Date'], y=tickerDf['Portfolio'], name="Portfolio"))
+        fig.layout.update(
+            title_text='Time Series data with Rangeslider', xaxis_rangeslider_visible=True)
+        st.plotly_chart(fig , use_container_width=True)
 
 def app(un):
 
@@ -150,7 +155,8 @@ def app(un):
                 # stock_close["Nifty 50"] = nifty_50_data
                 # stock_data["combined_data"] = combined_data
                 # st.write(stock_close)
-                st.line_chart(stock_close,y=['Portfolio'])
+                # st.line_chart(stock_close,y=['Portfolio'])
+                plot_raw_data(stock_close)
 
         
             
