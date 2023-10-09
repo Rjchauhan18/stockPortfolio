@@ -25,7 +25,7 @@ db=deta.Base("auth")
 
 stock=deta.Base("Stocks")
 
-def insert_user(username,full_name,email,password,db_list):
+def insert_user(username,full_name,email,password,db_list=None):
     date_join=str(datetime.datetime.now()) 
     db.put({"key":username,"email":email,"Fullname":full_name,"Password":password,"Date of join":date_join,"db_list":db_list})
 
