@@ -5,8 +5,6 @@ from datetime import datetime as dt,date, timedelta
 from plotly import graph_objs as go
 import db 
 import quantstats as qs
-import imgkit
-
 
 st.set_page_config(page_title="Stock Portfolio" , page_icon=":bar_chart:",layout="wide")
 
