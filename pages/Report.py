@@ -2,7 +2,7 @@ import streamlit as st
 from Home import statusFunc
 import streamlit.components.v1 as components
 import imgkit 
-import pdfkit
+
 
 # with open("output/portfolio.html","r") as f:
 #     report=f.read()
