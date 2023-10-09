@@ -6,5 +6,5 @@ mysql-connector ==2.2.9
 plotly ==5.16.1 
 deta
 python-dotenv
-quantstats
+QuantStats ==0.0.62
 imgkit
