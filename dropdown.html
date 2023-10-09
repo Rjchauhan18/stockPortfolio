@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dstyle.css">
+
+    <title> Custom Dropdown Menu </title>
+</head>
+
+<body>
+    <div class="dropbox">
+    <div class="menu">
+        <div class="select-btn">
+            <span class="chooseText"> Choose and option</span>
+            <div class="arrow"></div>
+        </div>
+
+        <ul class="options">
+            <li class="option html">
+
+                <span class="option-text"> TCS </span>
+            </li>
+            <li class="option css">
+ 
+                <span class="option-text"> LT </span>
+            </li>
+            <li class="option js">
+ 
+                <span class="option-text"> Adani Wilmar </span>
+            </li>
+            <li class="option react">
+   
+                <span class="option-text"> IndiaMart Intermesh </span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+    <script>
+        const selectMenu = document.querySelector(".menu");
+        const selectBtn = selectMenu.querySelector(".select-btn");
+
+        selectBtn.addEventListener("click", function () {
+            selectMenu.classList.toggle("active");
+        });
+
+    </script>
+
+</body>
+
+</html>
