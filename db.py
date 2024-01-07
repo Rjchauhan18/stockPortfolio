@@ -1,6 +1,6 @@
 import os
 from deta import Deta
-from dotenv import load_dotenv
+from dotenv.main import load_dotenv
 import datetime
 import re
 
