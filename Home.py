@@ -5,12 +5,15 @@ from datetime import datetime as dt,date, timedelta
 from plotly import graph_objs as go
 import db 
 import quantstats as qs
+import riskfolio as rp
+import numpy as np
+from report import download_report
 
 st.set_page_config(page_title="Stock Portfolio" , page_icon=":bar_chart:",layout="wide")
 
 # Login / SignUp setup with session state
 status=None
-                      
+
 def statusFunc():
     return st.session_state.status
 
@@ -77,8 +80,11 @@ def app(un):
         with st.container():
             if st.sidebar.button('Log Out'):
                 st.session_state.status = False
-                st.experimental_rerun()
-    
+                st.session_state.un = None  # Reset the username
+                st.experimental_set_query_params()  # Trigger rerun by updating query params
+                st.session_state.i = 0  # Reset any other session state variables if necessary
+                st.stop()  # Stop the execution to refresh the app
+
     # created i variable for getting the stocks and symbol dictionary only once
     i=0
     if i not in st.session_state:
@@ -134,9 +140,12 @@ def app(un):
                 l1={"Company": company, "Qty": qty, "Start_date":dt_no_time, "End_date":dt_no_time2 }
 
                 db_l.append(l1)
-                        
+
+            # print(companies)
+            # st.write(companies)
+
             df = pd.DataFrame(db_l)
-            with st.expander(":Green[Data Info]"):
+            with st.expander("Data Info"):
                 c1,c2=st.columns([0.95,2])
                 with c2:
                     edited_df = st.data_editor(df,
@@ -175,10 +184,14 @@ def app(un):
                     
                     #Adding Data of list companies and qty,startdate,enddate into database
                     db.Update_db_list(un,db_dic)
-                    qs.reports.html(stock_close,title="portfolio",output="output/portfolio.html")
-
-
-
+                    # qs.reports.html(stock_close,title="portfolio",output="output/portfolio.html")
+                    if stock_close.shape[1] > 1:  # Ensure there is more than 1 column (stocks) to plot
+                        # qs.reports.html(stock_close, title="portfolio", output="output/portfolio.html")
+                        st.write(companies)
+                        rpt=download_report(companies,start_date,end_date)
+                        st.pyplot(rpt,clear_figure=True)
+                    else:
+                        st.warning("Not enough data to generate the report")
 
                         # stock_open["open"] = yf.download(company, start="2023-01-01", end="2023-08-12")["Open"]
                     stock_close["Portfolio"]= stock_close.sum(axis=1)
@@ -393,7 +406,7 @@ def Login():
 
                     st.info("You have successfully logged In")
                     # st.stop()
-                    st.experimental_rerun()
+                    st.experimental_user()  # Trigger rerun by updating query params
                 else:
                     st.error("Incorrect Password")
                 
